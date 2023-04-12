@@ -35,18 +35,18 @@ const defaultManifest = {
   "action": {
     "browser_style": false,
     "default_icon": {
-      "16": "icons/favicon.png",
-      "32": "icons/favicon.png",
+      "16": "favicon.png",
+      "32": "favicon.png",
     },
     "default_title": "default_title_action",
     "default_popup": actionPage,
     "theme_icons": [{
-      "light": "icons/favicon.png",
-      "dark": "icons/favicon.png",
+      "light": "favicon.png",
+      "dark": "favicon.png",
       "size": 16
     },{
-      "light": "icons/favicon.png",
-      "dark": "icons/favicon.png",
+      "light": "favicon.png",
+      "dark": "favicon.png",
       "size": 32
     }]
   },
@@ -83,8 +83,8 @@ function initializeMozillaManifest(
     },
     "sidebar_action": {
       "default_icon": {
-        "16": "icons/favicon.png",
-        "32": "icons/favicon.png",
+        "16": "favicon.png",
+        "32": "favicon.png",
         },
       "default_title": "My sidebar",
       "default_panel": sidebarActionPage,
@@ -124,7 +124,7 @@ function sidebarActionPageExists(
 function listWebAccessibleResources(
   /** @type {import('..').Struct} */ struct,
 ) {
-  const baseDir = path.join(struct.pagesPath.absolute, struct.options.in.webAccessibleResources);
+  const baseDir = path.join(struct.pagesPath.absolute, struct.options.input.webAccessibleResources);
   return listFolder(baseDir).then(files => {
     return files.map(filePath => {
       return path.relative(struct.pagesPath.absolute, filePath);
@@ -177,7 +177,7 @@ async function getHydrationScriptRelativePath(
 function listAllWARExternalizedScripts(
   /** @type {import('..').Struct} */ struct,
 ) {
-  const absPath = path.join(struct.pagesPath.absolute, struct.options.in.webAccessibleResources);
+  const absPath = path.join(struct.pagesPath.absolute, struct.options.input.webAccessibleResources);
   return listFolder(absPath, true)
     .then(files => {
       return Promise.all(files.map(filePath => getHydrationScriptRelativePath(filePath)));

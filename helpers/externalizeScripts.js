@@ -56,7 +56,7 @@ function externalizeScript(
           const content = script;
           /** @type {string} */
           const hash = Buffer.from(hashString(content), 'base64').toString('hex');
-          const filename = struct.options.out.externalizedScriptsPrefix + hash + '.js';
+          const filename = struct.options.output.externalizedScriptsPrefix + hash + '.js';
           const absoluteFullPathFileName = path.join(struct.assetsPath.absolute, filename);
           const webFullPathFileName = path.join(path.sep, filename);
           promises.push(createFile(absoluteFullPathFileName, content));

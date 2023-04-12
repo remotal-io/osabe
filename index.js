@@ -22,33 +22,33 @@ const getOtionsObject = function getOtionsObject(
 /** @type {import('.').AdapterOptions | undefined | null} */	options
 ) {
 	const {
-		out: {
-			root = 'build',
-			contentScriptsFolderName = contentScriptsFolderNameDefault,
-			externalizedScriptsPrefix = externalizedScriptsPrefixDefault,
-		},
-		in: {
-			webAccessibleResources = 'web_accessible_ressources',
-			optionsPage = 'options_page',
-			popup = 'popup',
-		},	
+		output,
+		input,
 		strict = true,
 		fallback,
 		platforms = ['chrome', 'mozilla'],
-		platformPlaceholder: {
-			replace = true,
-			expression = `Math.random() > 0.5 || "OSABE-PLATEFORM"`,
-		},
-		manifestBuilder = null,
+		platformPlaceholder,
+		manifestBuilder = null
 	} = options ?? /** @type {import('./index').AdapterOptions} */ ({});
 
+	const root = output?.root || 'build';
+	const contentScriptsFolderName = output?.contentScriptsFolderName || contentScriptsFolderNameDefault;
+	const externalizedScriptsPrefix = output?.externalizedScriptsPrefix || externalizedScriptsPrefixDefault;
+
+	const webAccessibleResources = input?.webAccessibleResources || 'web_accessible_ressources';
+	const optionsPage = input?.optionsPage || 'options_page';
+	const popup = input?.popup || 'popup';
+
+	const replace = platformPlaceholder?.replace ?? true;
+	const expression = platformPlaceholder?.expression || `Math.random() > 0.5 || "OSABE-PLATEFORM"`;
+
 	return {
-		out: {
+		output: {
 			root,
 			contentScriptsFolderName,
 			externalizedScriptsPrefix
 		},
-		in: {
+		input: {
 			webAccessibleResources,
 			optionsPage,
 			popup
@@ -124,7 +124,7 @@ const adapterPlugin = function adapterPlugin(options) {
 				platform: '',
 				serviceWorkerFileName,
 				options: validOptions,
-				tmpPath: path.join(options.out.root, 'tmp'),
+				tmpPath: path.join(validOptions.output.root, 'tmp'),
 				appPath: builder.getAppPath(),
 				assetsPath: {
 					absolute: '',
@@ -141,11 +141,11 @@ const adapterPlugin = function adapterPlugin(options) {
 			};
 
 			builder.rimraf(struct.tmpPath);
-			builder.rimraf(validOptions.out.root);
+			builder.rimraf(validOptions.output.root);
 
-			checkPrerenderedPaths(builder.prerendered, builder.log, validOptions.in.webAccessibleResources, adapterName);
+			checkPrerenderedPaths(builder.prerendered, builder.log, validOptions.input.webAccessibleResources, adapterName);
 			// checkExternalizedScriptsFolderName(builder.log, validOptions.out.externalizedScriptsFolderName, externalizedScriptsFolderNameDefault)
-			const validCSFolderName = checkCSFolderName(builder.log, validOptions.out.contentScriptsFolderName, contentScriptsFolderNameDefault)
+			const validCSFolderName = checkCSFolderName(builder.log, validOptions.output.contentScriptsFolderName, contentScriptsFolderNameDefault)
 
 			builder.writeClient(struct.tmpPath);
 
@@ -156,8 +156,8 @@ const adapterPlugin = function adapterPlugin(options) {
 				tmpStruct.builder = builder;
 				tmpStruct.platform = platform;
 				tmpStruct.options = validOptions;
-				tmpStruct.assetsPath.absolute = path.join(validOptions.out.root, platform);
-				tmpStruct.pagesPath.absolute = path.join(validOptions.out.root, platform);
+				tmpStruct.assetsPath.absolute = path.join(validOptions.output.root, platform);
+				tmpStruct.pagesPath.absolute = path.join(validOptions.output.root, platform);
 				tmpStruct.contentScriptPath.absolute = path.join(tmpStruct.pagesPath.absolute, validCSFolderName);
 				tmpStruct.assetsPath.relative = '.' + path.sep;
 				tmpStruct.pagesPath.relative = '.' + path.sep;

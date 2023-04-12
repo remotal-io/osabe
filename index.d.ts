@@ -9,12 +9,12 @@ export declare const OPlatform: {
 export type Platform = typeof OPlatform[keyof typeof OPlatform];
 
 export interface AdapterOptions {
-	out: {
+	output: {
 		root?: string;
 		contentScriptsFolderName?: string;
 		externalizedScriptsPrefix?: string;
 	},
-	in: {
+	input: {
 		webAccessibleResources?: string,
 		optionsPage?: string,
 		popup?: string,
