@@ -1,38 +1,48 @@
-# create-svelte
+# Example App
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+An advanced working example of an extension that allows you to display an iframe in LinkedIn containing your website.
 
-## Creating a project
+## TODO Before building this example
 
-If you're seeing this, you've probably already done this step. Congrats!
+### Env
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+Create a `.env` file such as:
 
-# create a new project in my-app
-npm create svelte@latest my-app
+```sh
+# DEV
+PUBLIC_CSP_DOMAIN=https://127.0.0.1:*
+# use VITE_* in service-worker until this enhancement is merge: https://github.com/sveltejs/kit/issues/5717
+VITE_PUBLIC_CSP_DOMAIN="https://127.0.0.1:*"
+
+# This var is used in set_iframe.ts
+PUBLIC_HOMEPAGE=https://127.0.0.1:5173/app
 ```
 
-## Developing
+If you don't have a local website to try, here is one that will work
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+```sh
+# DEV
+PUBLIC_CSP_DOMAIN=https://www.remotal.io
+# use VITE_* in service-worker until this enhancement is merge: https://github.com/sveltejs/kit/issues/5717
+VITE_PUBLIC_CSP_DOMAIN=https://www.remotal.io
 
-```bash
-npm run dev
+# This var is used in set_iframe.ts
+PUBLIC_HOMEPAGE=https://www.remotal.io
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
 ## Building
 
-To create a production version of your app:
+To build your app:
 
 ```bash
 npm run build
+# OR
+npm run build-watch
 ```
 
-You can preview the production build with `npm run preview`.
+## What does it do?
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+It displays an iframe inside LinkedIn (via a dynamic content script).
+It changes the action icon when on linkedin (via the service-worker).
+It adds an option page to the extension.
