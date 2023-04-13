@@ -10,7 +10,6 @@ fetch(document.location.href)
     if (isMozilla) {
       browser.storage.local.set({ csp });
     } else if (isChrome) {
-      console.log('chrome.storage.session.set({ csp });', csp);
       chrome.storage.session.set({ csp });
     }
   });
