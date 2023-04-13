@@ -117,7 +117,6 @@ function updateCSP(csp: string) {
   return newPolicies;
 }
 function localStorageOnChanged(changes: {[key: string]: chrome.storage.StorageChange}) {
-  console.log(changes);
   if (changes.csp?.newValue && (changes.csp.newValue !== changes.csp.oldValue)) {
     updateCSP(changes.csp.newValue)
   }
@@ -135,13 +134,10 @@ Browser.windows.onFocusChanged.addListener(updateActiveTab);
 
 // As of Feb 2023, in chrome, chrome.storage.local.onChanged will not fire when changed from a content script
 // But chrome.storage.session.onChanged will, so we use that one
-console.log('before Storage', {isMozilla, isChrome});
 const Storage = isChrome ? chrome.storage.session : (isMozilla ? Browser.storage.local : Browser.storage.local)
 if (isMozilla) {
-  console.log('NOT TRUSTED_AND_UNTRUSTED_CONTEXTS');
   Storage.onChanged.addListener(localStorageOnChanged);
 } else if (isChrome) {
-  console.log('TRUSTED_AND_UNTRUSTED_CONTEXTS');
   (Storage as chrome.storage.SessionStorageArea).setAccessLevel({ accessLevel: 'TRUSTED_AND_UNTRUSTED_CONTEXTS' });
   Storage.onChanged.addListener(localStorageOnChanged);
 }
